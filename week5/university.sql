@@ -16,7 +16,7 @@ create table students (
   groupId int REFERENCES groups (groupId)
 );
 
-create courses (
+create table courses (
     courseId int PRIMARY KEY,
     courseName varchar(30)
 );
