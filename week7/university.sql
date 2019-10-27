@@ -28,19 +28,16 @@ create table lecturers (
 
 create table marks (
   value int not null,
-  course_id int REFERENCES courses (id)
-    on delete cascade,
-  student_id int REFERENCES students (id) 
+  course_id int REFERENCES courses (id),
+  student_id int REFERENCES students (id)
     on delete cascade,
   PRIMARY KEY (course_id, student_id),
   CHECK (value between 0 and 100)
 );
 
 create table academic_plan (
-  lecturer_id int REFERENCES lecturers (id)
-    on delete cascade,
-  course_id int REFERENCES courses (id)
-    on delete cascade,
+  lecturer_id int REFERENCES lecturers (id),
+  course_id int REFERENCES courses (id),
   group_id int REFERENCES groups (id)
     on delete cascade,
   PRIMARY KEY (lecturer_id, course_id, group_id)

@@ -22,6 +22,7 @@ where students.id not in
      where marks.value < 60);
 
 -- task 2
+
 with debts as
   (select student_courses.student_id as id,
           count(*) as debt_number
