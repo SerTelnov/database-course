@@ -72,6 +72,29 @@ create trigger booking_timeout_trigger
 after update or insert on tickets
 for each row execute procedure booking_timeout();
 
+create function remove_booking()
+  returns trigger as
+  $$
+    DECLARE
+      curr_reserved_time timestamp;
+      curr_flight_time timestamp;
+    begin
+      if OLD.status = 'booked' then
+        curr_reserved_time := (select reserved_time from tickets where id = OLD.id);
+        curr_flight_time := (select flight_time from flights where flights.id = NEW.id);
+
+        if curr_reserved_time > (curr_flight_time - interval '1 day') then
+          delete from tickets where id = OLD.id;
+        end if;
+      end if;
+      return OLD;
+    end;
+  $$ language plpgsql;
+
+create trigger remove_booking_trigger
+before select on tickets
+for each row execute procedure remove_booking();
+
 create function already_bought()
   returns trigger as
   $$
@@ -86,3 +109,8 @@ create function already_bought()
 create trigger already_bought_trigger
 before update on tickets
 for each row execute procedure already_bought();
+
+
+create index idx_flights_time on flights (id, flight_time);
+create index idx_tickets_time on tickets (id, reserved_time);
+create index idx_tickets_flights on tickets (flight_id, status);
