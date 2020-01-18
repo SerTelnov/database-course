@@ -64,21 +64,21 @@ def write_albums(album_data):
 
     track_number = 0
     for i, album in enumerate(album_data):
-      curr_artist_str = str(album['artist'])
-      row = ','.join([str(i), album['name'], album['date'], curr_artist_str]) + '\n'
+      curr_artist_str = str(album['artist'] + 1)
+      row = ','.join([album['name'], album['date'], curr_artist_str]) + '\n'
       album_file.write(row)
 
       for track in album['tracks']:
-        track_num_str = str(track_number)
+        track_num_str = str(track_number + 1)
 
-        row = ','.join([str(track_number), track['name'], curr_artist_str]) + '\n'
+        row = ','.join([track['name'], str(i + 1)]) + '\n'
         track_file.write(row)
 
         row = ','.join([track_num_str, curr_artist_str]) + '\n'
         track_artist_file.write(row)
 
         if 'other_artist' in track:
-          row = ','.join([track_num_str, str(track['other_artist'])]) + '\n'
+          row = ','.join([track_num_str, str(track['other_artist'] + 1)]) + '\n'
           track_artist_file.write(row)
         if 'chart' in track:
           for chart_info in track['chart']:
@@ -114,24 +114,22 @@ def write_concerts(concerts, tour_concerts, tours):
     open(DATA_PATH + 'tour.csv',"w+") as tour_file,\
     open(DATA_PATH + 'tourConcert.csv',"w+") as tour_concert_file:
 
-    ticket_number = 0
     for i, concert in enumerate(all_concerts):
-      row = ','.join([str(i), concert['date'], concert['address'], str(concert['cost']), str(concert['capacity'])]) + '\n'
+      row = ','.join([concert['date'], concert['address'], str(concert['cost']), str(concert['capacity'])]) + '\n'
       concert_file.write(row)
 
-      row = ','.join([str(i), str(concert['artist'])]) + '\n'
+      row = ','.join([str(i + 1), str(concert['artist'] + 1)]) + '\n'
       concert_artist_file.write(row)
       for _ in range(concert['tickets']):
-        row = ','.join([str(ticket_number), str(i)]) + '\n'
+        row = ','.join([str(i + 1)]) + '\n'
         ticket_file.write(row)
-        ticket_number += 1
 
-    concert_idx = len(concerts)
+    concert_idx = len(concerts) + 1
     for i, tour in enumerate(tours):
-      row = ','.join([str(i), tour['name']]) + '\n'
+      row = ','.join([tour['name']]) + '\n'
       tour_file.write(row)
       for _ in range(len(tour['concerts'])):
-        row = ','.join([str(i), str(concert_idx)]) + '\n'
+        row = ','.join([str(i + 1), str(concert_idx)]) + '\n'
         tour_concert_file.write(row)
         concert_idx += 1
 

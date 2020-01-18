@@ -22,8 +22,8 @@ create table Contract (
   PRIMARY KEY (artist_id, date_from)
 );
 
-create index idx_contract_date_to on contract (data_to);
-create index idx_contract_date_from on contract (data_from);
+create index idx_contract_date_to on contract (date_to);
+create index idx_contract_date_from on contract (date_from);
 
 create table Album (
   id serial PRIMARY KEY,
